@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Job Radar · AI/ML and SDE roles in India</title>
+<meta name="description" content="AI/ML engineer and SDE openings in Delhi NCR, Pune and Bangalore, gathered from company career sites, LinkedIn, Naukri and Wellfound.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #121412; --paper: #FAF8F3; --green: #1F5C46; --mint: #D7E8DD; --gold: #B8893A;
+  --bg: var(--paper); --surface: #FFFFFF; --text: var(--ink); --muted: #5D655F; --line: #E4E1D8;
+  --accent: var(--green); --accent-soft: var(--mint); --accent-text: #FFFFFF; --bad: #A23B2A;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #121412; --surface: #1A1E1B; --text: #EEF1EC; --muted: #9AA59D; --line: #2A302C;
+  --accent: #7FC4A2; --accent-soft: #1F3A2F; --accent-text: #121412; --bad: #E27D6A;
+}}
+:root[data-theme="dark"] {
+  --bg: #121412; --surface: #1A1E1B; --text: #EEF1EC; --muted: #9AA59D; --line: #2A302C;
+  --accent: #7FC4A2; --accent-soft: #1F3A2F; --accent-text: #121412; --bad: #E27D6A;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.45 "DM Sans", system-ui, sans-serif; }
+a { color: inherit; }
+.wrap { max-width: 1280px; margin: 0 auto; padding: 24px 16px 64px; }
+header { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+h1 { font: 400 40px/1 "DM Serif Display", serif; margin: 0; letter-spacing: -.01em; }
+h1 em { font-style: normal; color: var(--accent); }
+h2 { font: 400 22px "DM Serif Display", serif; margin: 0 0 8px; }
+.sub { color: var(--muted); margin-top: 6px; font-size: 14px; }
+.btn { border: 1px solid var(--line); background: var(--surface); color: var(--text); border-radius: 999px; padding: 8px 16px; font: 500 14px "DM Sans"; cursor: pointer; }
+
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+.kpi { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+.kpi b { display: block; font: 400 32px/1.1 "DM Serif Display", serif; }
+.kpi span { color: var(--muted); font-size: 13px; }
+
+.filters { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px; margin-bottom: 16px; }
+.group { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
+.group > label { font-size: 12px; color: var(--muted); margin-right: 4px; text-transform: uppercase; letter-spacing: .06em; }
+.chip { border: 1px solid var(--line); background: transparent; color: var(--text); border-radius: 999px; padding: 4px 11px; font: 500 13px "DM Sans"; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); }
+input[type=search], select { border: 1px solid var(--line); background: var(--bg); color: var(--text); border-radius: 8px; padding: 6px 10px; font: 14px "DM Sans"; }
+input[type=search] { min-width: 200px; flex: 1; }
+
+.layout { display: grid; grid-template-columns: 1fr 320px; gap: 16px; align-items: start; }
+.list { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.job { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; display: grid; grid-template-columns: 52px 1fr; gap: 12px; align-items: center; }
+.score { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-weight: 600; font-size: 15px; background: var(--accent-soft); }
+.score.hi { background: var(--accent); color: var(--accent-text); }
+.title { font-weight: 600; }
+.title a { text-decoration: none; } .title a:hover { text-decoration: underline; }
+.meta { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin-top: 2px; }
+.tag { white-space: nowrap; line-height: 1.4; font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; padding: 2px 7px; border-radius: 6px; border: 1px solid var(--line); }
+.tag.entry { border-color: var(--accent); color: var(--accent); }
+.tag.new { background: var(--gold); border-color: var(--gold); color: #fff; }
+.tag.bad { color: var(--bad); border-color: var(--bad); }
+.tag.from { text-transform: none; letter-spacing: 0; font-weight: 500; color: var(--muted); }
+.empty { padding: 40px; text-align: center; color: var(--muted); background: var(--surface); border: 1px dashed var(--line); border-radius: 12px; }
+.note { color: var(--muted); font-size: 13px; margin: 0 0 10px; }
+.more { margin: 8px auto 0; display: block; }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; margin-bottom: 16px; }
+.manual a { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; padding: 5px 0; border-top: 1px solid var(--line); text-decoration: none; }
+.manual a small { color: var(--muted); white-space: nowrap; }
+footer { color: var(--muted); font-size: 13px; margin-top: 32px; text-align: center; }
+[hidden] { display: none !important; }
+
+@media (max-width: 960px) { .layout { grid-template-columns: 1fr; } .kpis { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) {
+  h1 { font-size: 32px; }
+  .job { grid-template-columns: 40px 1fr; }
+  .score { width: 38px; height: 38px; font-size: 13px; }
+  input[type=search] { min-width: 0; flex-basis: 100%; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Job <em>Radar</em></h1>
+      <div class="sub" id="sub">Loading…</div>
+    </div>
+    <button class="btn" id="theme" title="Toggle theme" aria-label="Toggle theme">◐</button>
+  </header>
+
+  <section class="kpis" id="kpis"></section>
+  <section class="filters" aria-label="Filters">
+    <div class="group" data-f="city"><label>City</label>
+      <button class="chip" data-v="ncr">Delhi NCR</button><button class="chip" data-v="pune">Pune</button><button class="chip" data-v="blr">Bangalore</button><button class="chip" data-v="other">Other India</button>
+    </div>
+    <div class="group" data-f="level"><label>Level</label>
+      <button class="chip" data-v="entry">Entry</button><button class="chip" data-v="mid">Mid</button><button class="chip" data-v="senior">Senior</button><button class="chip" data-v="intern">Intern</button>
+    </div>
+    <div class="group" data-f="role"><label>Role</label>
+      <button class="chip" data-v="ai">AI / ML</button><button class="chip" data-v="sde">SDE</button>
+    </div>
+    <div class="group" data-f="source"><label>From</label>
+      <button class="chip" data-v="feed">Company sites</button><button class="chip" data-v="linkedin">LinkedIn</button><button class="chip" data-v="naukri">Naukri</button><button class="chip" data-v="wellfound">Wellfound</button>
+    </div>
+    <div class="group">
+      <select id="sort" aria-label="Sort"><option value="score">Best fit</option><option value="new">Newest first</option><option value="company">Company</option></select>
+      <label style="font-size:13px;color:var(--muted)"><input type="checkbox" id="lowpay"> show below-pay</label>
+    </div>
+    <input type="search" id="q" placeholder="Search title, company or city…">
+  </section>
+  <div class="layout">
+    <main>
+      <div class="list" id="list"></div>
+      <button class="btn more" id="more" hidden>Show more</button>
+    </main>
+    <aside>
+      <div class="card"><h2>About</h2>
+        <p class="note">AI/ML engineer and SDE openings, read from company career sites, LinkedIn, Naukri and Wellfound and merged when the same job appears in more than one place.</p>
+        <p class="note">The circle is a fit score for an early-career AI/ML engineer: location counts most, then level, role and pay. Click a title to open the real posting.</p>
+      </div>
+      <div class="card manual"><h2>Check by hand</h2><p class="note">These companies have no public feed, so look at their careers pages directly.</p><div id="manual"></div></div>
+    </aside>
+  </div>
+  <footer>Made by Aryan · <a href="https://aryansarcade.in">aryansarcade.in</a></footer>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+const DAY = 864e5, PAGE = 60;
+const SOURCE_NAME = { feed: 'company site', linkedin: 'LinkedIn', naukri: 'Naukri', wellfound: 'Wellfound' };
+const store = (() => { try { return window.localStorage; } catch { return null; } })();
+const prefs = (() => { try { return JSON.parse(store?.getItem('jr-public-prefs') || '{}'); } catch { return {}; } })();
+const state = {
+  city: new Set(prefs.city ?? ['ncr', 'pune', 'blr']), level: new Set(prefs.level ?? ['entry', 'mid']), role: new Set(prefs.role ?? ['ai', 'sde']),
+  source: new Set(prefs.source ?? ['feed', 'linkedin', 'naukri', 'wellfound']),
+};
+let data = null, all = [], shown = PAGE;
+
+const normCo = s => s.toLowerCase().replace(/\(.*?\)|[^a-z0-9 ]/g, ' ').replace(/\b(pvt|private|ltd|limited|inc|llp|technologies|india)\b/g, '').replace(/\s+/g, ' ').trim();
+function savePrefs() { try { store?.setItem('jr-public-prefs', JSON.stringify(Object.fromEntries(Object.entries(state).map(([k, v]) => [k, [...v]])))); } catch {} }
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const ago = iso => { if (!iso) return 'never'; const d = Math.floor((Date.now() - new Date(iso)) / DAY); if (d <= 0) { const h = Math.floor((Date.now() - new Date(iso)) / 36e5); return h <= 0 ? 'just now' : `${h} h ago`; } return d === 1 ? 'yesterday' : `${d}d ago`; };
+
+// The same job often appears on the company site and on LinkedIn/Naukri: show it once, linking to the company site.
+function grouped() {
+  const map = new Map();
+  for (const j of data.jobs) {
+    const k = `${normCo(j.company)}|${j.title.toLowerCase().replace(/\s+/g, ' ').trim()}|${j.city}`;
+    const srcs = [j.source || 'feed', ...(j.alsoOn || [])];
+    const g = map.get(k);
+    if (!g) map.set(k, { ...j, count: 1, sources: new Set(srcs) });
+    else {
+      g.count++; srcs.forEach(s => g.sources.add(s));
+      if (j.firstSeen < g.firstSeen) g.firstSeen = j.firstSeen;
+      if ((j.source || 'feed') === 'feed' && g.source !== 'feed') Object.assign(g, { url: j.url, source: 'feed' });
+    }
+  }
+  return [...map.values()];
+}
+
+function filtered() {
+  const q = $('#q').value.trim().toLowerCase();
+  const rows = all.filter(g =>
+    ($('#lowpay').checked || !g.belowPay) &&
+    state.city.has(g.city) && state.level.has(g.level) &&
+    ((g.isAI && state.role.has('ai')) || (g.isSDE && state.role.has('sde'))) &&
+    [...g.sources].some(s => state.source.has(s)) &&
+    (!q || `${g.title} ${g.company} ${g.location}`.toLowerCase().includes(q)));
+  const sort = $('#sort').value;
+  rows.sort(sort === 'new' ? (a, b) => b.firstSeen.localeCompare(a.firstSeen) || b.score - a.score
+    : sort === 'company' ? (a, b) => a.company.localeCompare(b.company) || b.score - a.score
+    : (a, b) => b.score - a.score || b.firstSeen.localeCompare(a.firstSeen));
+  return rows;
+}
+
+const isNew = g => Date.now() - new Date(g.firstSeen) < 7 * DAY && +new Date(g.firstSeen) > data.firstRun + 3600e3;
+
+function render() {
+  const rows = filtered();
+  const open = all.filter(g => !g.belowPay), ncr = open.filter(g => g.city === 'ncr');
+  $('#kpis').innerHTML = [[open.length, 'open roles'], [ncr.length, 'in Delhi NCR'],
+    [open.filter(g => g.level === 'entry').length, 'entry-level'], [open.filter(isNew).length, 'new this week']]
+    .map(([n, l]) => `<div class="kpi"><b>${n}</b><span>${l}</span></div>`).join('');
+  $('#sub').textContent = `${open.length} open roles across ${new Set(open.map(g => g.company)).size} companies · updated ${ago(data.updatedAt)}`;
+
+  $('#list').innerHTML = rows.length ? rows.slice(0, shown).map(g => `<article class="job">
+      <div class="score${g.score >= 80 ? ' hi' : ''}" title="Fit score">${g.score}</div>
+      <div>
+        <div class="title"><a href="${esc(g.url)}" target="_blank" rel="noopener">${esc(g.title)}</a></div>
+        <div class="meta">
+          <span><b>${esc(g.company)}</b></span><span>${esc(g.location.slice(0, 70))}</span>
+          <span class="tag ${g.level === 'entry' ? 'entry' : ''}">${g.level}</span>
+          ${g.isSDE ? '<span class="tag">SDE</span>' : ''}
+          <span class="tag from">${[...g.sources].map(x => SOURCE_NAME[x] || x).join(' + ')}</span>
+          ${isNew(g) ? '<span class="tag new">new</span>' : ''}
+          ${g.belowPay ? `<span class="tag bad">below ${data.minPay} LPA</span>` : ''}
+          <span>seen ${ago(g.firstSeen)}</span>
+        </div>
+      </div>
+    </article>`).join('') : '<div class="empty">No roles match these filters. Try adding a city or the Mid level.</div>';
+  $('#more').hidden = rows.length <= shown;
+  $('#more').textContent = `Show more (${rows.length - shown} left)`;
+
+  $('#manual').innerHTML = data.manual.map(c =>
+    `<a href="${esc(c.careers)}" target="_blank" rel="noopener"><span>${esc(c.name)}</span><small>${esc(c.city)}</small></a>`).join('');
+  for (const grp of document.querySelectorAll('.group[data-f]')) for (const b of grp.querySelectorAll('.chip')) b.setAttribute('aria-pressed', state[grp.dataset.f].has(b.dataset.v));
+}
+
+document.addEventListener('click', e => {
+  const chip = e.target.closest('.group[data-f] .chip');
+  if (chip) { const set = state[chip.parentElement.dataset.f]; set.has(chip.dataset.v) ? set.delete(chip.dataset.v) : set.add(chip.dataset.v); savePrefs(); shown = PAGE; render(); }
+});
+document.addEventListener('change', e => { if (['sort', 'lowpay'].includes(e.target.id)) { shown = PAGE; render(); } });
+$('#q').addEventListener('input', () => { shown = PAGE; render(); });
+$('#more').addEventListener('click', () => { shown += PAGE; render(); });
+$('#theme').addEventListener('click', () => {
+  const root = document.documentElement;
+  const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  root.dataset.theme = dark ? 'light' : 'dark';
+});
+
+fetch('data.json', { cache: 'no-cache' }).then(r => r.json()).then(d => { data = d; all = grouped(); render(); })
+  .catch(() => { $('#sub').textContent = 'Could not load the job list. Try reloading.'; });
+</script>
+</body>
+</html>
